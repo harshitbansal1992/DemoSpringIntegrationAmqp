@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  rabbitmq01:
+    image: rabbitmq:3.8-management
+    container_name: rabbitmq01
+    hostname: rabbitmq01
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions/definitions.json:ro
+    networks:
+      - plm01
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 15s
+      retries: 50
+
+networks:
+  plm01:
+    name: plm01

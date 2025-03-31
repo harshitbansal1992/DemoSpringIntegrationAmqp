@@ -1,0 +1,199 @@
+{
+  "users": [
+    {
+      "name": "adm",
+      "password_hash": "MyQAEwMufDmNfT9DmkxZRq2sWw5opk5/IugOC23n/ORUkU1R",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "app",
+      "password_hash": "MyQAEwMufDmNfT9DmkxZRq2sWw5opk5/IugOC23n/ORUkU1R",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "app",
+      "vhost": "/",
+      "configure": "",
+      "write": "^(app).*",
+      "read": "^(app).*"
+    },
+    {
+      "user": "adm",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "migration.rxi",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.rxo",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.dlx",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.large.rxi",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.large.rxo",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.large.dlx",
+      "vhost": "/",
+      "type": "direct",
+      "durable": false,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "migration.q",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "migration.dlx",
+        "x-max-length": 10000
+      }
+    },
+    {
+      "name": "migration.wq",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "migration.rxo",
+        "x-message-ttl": 15000
+      }
+    },
+    {
+      "name": "migration.dlq",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "migration.large.q",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "migration.large.dlx",
+        "x-max-length": 100000
+      }
+    },
+    {
+      "name": "migration.large.wq",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "migration.large.rxo",
+        "x-message-ttl": 15000
+      }
+    },
+    {
+      "name": "migration.large.dlq",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "migration.rxi",
+      "vhost": "/",
+      "destination": "migration.wq",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "migration.rxo",
+      "vhost": "/",
+      "destination": "migration.q",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "migration.dlx",
+      "vhost": "/",
+      "destination": "migration.dlq",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "migration.large.rxi",
+      "vhost": "/",
+      "destination": "migration.large.wq",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "migration.large.rxo",
+      "vhost": "/",
+      "destination": "migration.large.q",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "migration.large.dlx",
+      "vhost": "/",
+      "destination": "migration.large.dlq",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}
